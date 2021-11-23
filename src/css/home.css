@@ -1,0 +1,63 @@
+.container-home {
+  background-color: black;
+  width: 85%;
+  margin-left: 15%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+.patch {
+  margin: 5px;
+  width: 22%;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: rgb(46, 46, 46);
+}
+
+.patch:hover {
+  cursor: pointer;
+  background-color: black;
+}
+
+.patch-pic {
+  width: 100%;
+  object-fit: cover;
+  height: 200px;
+}
+
+.title-fav {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+  font-weight: bold;
+}
+
+.plus-circle {
+  font-size: 20px;
+}
+.plus-circle:hover {
+  cursor: pointer;
+  color: black;
+}
+
+.patch-part2 {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin: 2px 0;
+  border-top: 1px grey dashed;
+}
+
+.patch-part3 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  /* text-overflow: ellipsis; */
+  /* border: hotpink 2px solid; */
+}
+.patch-results {
+  display: flex;
+  flex-direction: row;
+  color: white;
+  margin-left: 4px;
+}
