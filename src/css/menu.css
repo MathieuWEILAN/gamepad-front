@@ -8,9 +8,45 @@
   top: 110px;
   background-color: black;
   font-size: 22px;
+  padding: 0px 5px 40px;
+  /* box-sizing: border-box; */
+  /* border: springgreen 1px solid; */
+  box-sizing: border-box;
+  font-weight: bold;
 }
 
-.menu-options {
+.menu-option {
   text-decoration: none;
   color: white;
+  padding: 20px 0px 20px 5px;
+}
+.menu-option2 {
+  text-decoration: none;
+  color: white;
+  padding: 20px 5px;
+  display: flex;
+  justify-content: space-between;
+  /* border: grey solid 1px; */
+}
+.sort {
+  color: white;
+  font-size: 24px;
+}
+
+.icon {
+  color: white;
+  font-size: 20px;
+}
+.btn-filter {
+  background-color: black;
+  border: none;
+}
+
+.filters {
+  font-size: 13px;
+  color: grey;
+  padding: 0 5px;
+}
+.filter {
+  margin: 5px 0px;
 }

@@ -6,4 +6,11 @@ body {
   margin: 0px;
   padding: 0px;
   font-family: "Roboto", sans-serif;
+  background-color: black;
+}
+
+.page {
+  background-color: blue;
+  display: flex;
+  flex-direction: row;
 }

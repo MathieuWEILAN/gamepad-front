@@ -11,8 +11,23 @@ import {
   faPlusCircle,
   faCaretDown,
   faCaretUp,
+  faSortDown,
+  faSortUp,
+  faGamepad,
+  faStar,
+  faSort,
 } from "@fortawesome/free-solid-svg-icons";
-library.add(faSearch, faPlusCircle, faCaretDown, faCaretUp);
+library.add(
+  faSearch,
+  faPlusCircle,
+  faCaretDown,
+  faCaretUp,
+  faSortDown,
+  faSortUp,
+  faGamepad,
+  faStar,
+  faSort
+);
 
 require("dotenv").config();
 
@@ -20,18 +35,20 @@ const apikey = "3d0967870fc44ddd8927c371f864b54f";
 
 function App() {
   const [search, setSearch] = useState("");
+  const [genres, setGenres] = useState("");
 
   const handleSearch = (event) => {
-    setSearch(event.target.default);
+    let value = event.target.value;
+    setSearch(value);
   };
 
   return (
     <Router>
       <Header handleSearch={handleSearch} />
-      <Menu />
+      <Menu setGenres={setGenres} />
       <Routes>
-        <Route path="/" element={<Home search={search} />} />
-        <Route path="/games/" element={<Games apikey={apikey} />} />
+        <Route path="/" element={<Home search={search} genres={genres} />} />
+        <Route path="/games/:id" element={<Games apikey={apikey} />} />
       </Routes>
     </Router>
   );

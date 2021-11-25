@@ -7,48 +7,95 @@ import { Link } from "react-router-dom";
 
 const apikey = "3d0967870fc44ddd8927c371f864b54f";
 
-const Home = ({ search }) => {
+const Home = ({ search, genres }) => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [video, setVideo] = useState();
+  const [pageSkipe, setPageSkipe] = useState(20);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://api.rawg.io/api/games?page=${page}&search=${search}&key=${apikey}`
+          `https://api.rawg.io/api/games?genres=${genres}&page_size=${pageSkipe}&page=${page}&search=${search}&key=${apikey}`
         );
 
-        setData(response.data);
-
+        console.log(
+          `https://api.rawg.io/api/games?genres=${genres}&page_size=${pageSkipe}&page=${page}&search=${search}&key=${apikey}`
+        );
+        for (let i = 0; i < response.data.results.length; i++) {
+          const element = response.data.results[i];
+          element.isVideoPlaying = false;
+        }
+        setData(response.data.results);
+        console.log("home page", response.data);
         setIsLoading(false);
       } catch (error) {
         console.log(error.message);
       }
     };
     fetchData();
-  }, [page, search]);
+  }, [genres, pageSkipe, page, search]);
+
+  const videoPlaying = async (el) => {
+    try {
+      const response = await axios.get(
+        `https://api.rawg.io/api/games/${el.id}/movies?key=${apikey}`
+      );
+      const dataCopy = [...data];
+      const newData = dataCopy.map((elem) => {
+        const newElement = { ...elem };
+        if (elem.id === el.id) {
+          newElement.isVideoPlaying = !newElement.isVideoPlaying;
+        } else {
+          newElement.isVideoPlaying = false;
+        }
+        return newElement;
+      });
+      setData(newData);
+      if (response.data.results.length > 0) {
+        setVideo(response.data.results[0].data[480]);
+      } else {
+        setVideo(null);
+      }
+
+      console.log("newData", newData);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return isLoading ? (
     <div>En chargement</div>
   ) : (
     <div>
       <div className="container-home">
-        {data.results.map((game, i) => {
+        {data.map((game, i) => {
+          // const rateTotal = (
+          //   game.ratings[0].percent + game.ratings[1].percent
+          // ).toFixed(2);
           return (
             <div key={game.id} className="patch">
               <Link
-                to={`/games?id=${game.id}`}
+                to={`/games/${game.id}`}
                 style={{ textDecoration: "none", color: "grey" }}
-                id={game.id}
               >
                 <div>
-                  <img
-                    src={game.background_image}
-                    alt=""
-                    className="patch-pic"
-                  />
-
+                  {game.isVideoPlaying && video ? (
+                    <video autoPlay controls muted className="video">
+                      <source src={video} type="video/mp4" />
+                    </video>
+                  ) : (
+                    <img
+                      src={game.background_image}
+                      alt=""
+                      className="patch-pic"
+                      // onMouseOver={() => {
+                      //   videoPlaying(game);
+                      // }}
+                    />
+                  )}
                   <div className="title-fav">
                     <div>{game.name}</div>
                     <FontAwesomeIcon
@@ -78,7 +125,7 @@ const Home = ({ search }) => {
                     <div className="patch-part2">
                       <div>Plateforms</div>
                       <div className="patch-part3">
-                        {game.parent_platforms.map((plateform, i) => {
+                        {game?.platforms?.map((plateform, i) => {
                           return (
                             <div key={i} className="patch-results">
                               {plateform.platform.name}
@@ -89,9 +136,7 @@ const Home = ({ search }) => {
                     </div>
                     <div className="patch-part2">
                       <div>Recommanded</div>
-                      <div className="patch-results">
-                        {game.ratings[0].percent + game.ratings[1].percent}%
-                      </div>
+                      {/* <div className="patch-results">{rateTotal}%</div> */}
                     </div>
                   </div>
                 </div>
@@ -100,7 +145,7 @@ const Home = ({ search }) => {
           );
         })}
       </div>
-      <Page setPage={setPage} page={page} />
+      <Page setPage={setPage} page={page} data={data} pageSkipe={pageSkipe} />
     </div>
   );
 };

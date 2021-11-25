@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useParams } from "react-router";
 
-const Games = ({ id, apikey }) => {
+const Games = ({ apikey }) => {
   const [data, setData] = useState();
-  console.log("bonjour");
+  const { id } = useParams();
   console.log(id);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://api.rawg.io/api/games?id=${id}&key=${apikey}`
+          `https://api.rawg.io/api/games/${id}?key=${apikey}`
         );
         console.log("game", response.data);
+        setData(response.data);
+        console.log(data);
       } catch (error) {
         console.log(error.message);
       }

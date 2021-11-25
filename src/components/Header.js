@@ -12,7 +12,9 @@ const Header = ({ handleSearch }) => {
         src={logo}
         alt="logo-rawg"
         className="logo"
-        onClick={navigate("/")}
+        onClick={() => {
+          navigate("/");
+        }}
       />
       <div className="search-bar">
         <FontAwesomeIcon icon="search" className="icon-search" />
